@@ -13,7 +13,7 @@ class TimeStamp(models.Model):
 
 class SalesInfo(TimeStamp):
     fruit = models.ForeignKey(Fruits, verbose_name="果物", on_delete=models.CASCADE)
-    num = models.IntegerField(verbose_name="個数")
+    num = models.PositiveIntegerField(verbose_name="個数")
 
     @property
     def sum(self):
@@ -25,8 +25,8 @@ class SalesInfo(TimeStamp):
 
 class SoldInfo(TimeStamp):
     fruit = models.CharField(verbose_name="果物", max_length=20)
-    num = models.IntegerField(verbose_name="個数")
-    sum = models.IntegerField(verbose_name="売り上げ")
+    num = models.PositiveIntegerField(verbose_name="個数")
+    sum = models.PositiveIntegerField(verbose_name="売り上げ")
 
     def __str__(self):
         return f"{self.fruit}: {self.num}個: {self.sum}円"

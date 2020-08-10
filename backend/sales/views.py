@@ -44,3 +44,26 @@ class SalesInfoAPIView(APIView):
         sales_info.delete()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class SoldInfoMonthlyView(APIView):
+    def get(self, request, format=None):
+        sales = SoldInfo.objects.all()
+        # 当月を含む過去三ヶ月の月別の売り上げと内訳
+        sum = self.calc_sum(sales)
+
+    def calc_sum(self, sales):
+        sum = 0
+        for sale in sales:
+            sum += sale.sum
+        return sum
+
+
+class SoldInfoDailyView(APIView):
+    def get(self, request, format=None):
+        pass
+
+
+class SoldInfoSumView(APIView):
+    def get(self, request, format=None):
+        pass

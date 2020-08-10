@@ -11,7 +11,7 @@ class TimeStamp(models.Model):
 
 class Fruits(TimeStamp):
     name = models.CharField(verbose_name="名称", max_length=20)
-    price = models.IntegerField(verbose_name="価格")
+    price = models.PositiveIntegerField(verbose_name="価格")
 
     class Meta:
         ordering = ["-updated_at"]

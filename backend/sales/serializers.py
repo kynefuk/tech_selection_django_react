@@ -33,7 +33,6 @@ class SalesInfoCreateUpdateSerializer(serializers.ModelSerializer):
         read_only_fields = [
             "id",
             "sum",
-            "created_at",
             "updated_at",
             "fruit_id_list",
             "fruit_name_list",
