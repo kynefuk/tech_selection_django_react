@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.apps import apps
 
 
-app = apps.get_app_config("accounts")
+app = apps.get_app_config("fruits")
 
 for model in app.get_models():
     admin.site.register(model)

@@ -32,6 +32,9 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "accounts.apps.AccountsConfig",
+    "fruits.apps.FruitsConfig",
+    "sales.apps.SalesConfig",
+    "rest_framework",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
