@@ -10,7 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+from datetime import timedelta
 from pathlib import Path
+
+from corsheaders.defaults import default_headers
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -34,6 +37,7 @@ INSTALLED_APPS = [
     "accounts.apps.AccountsConfig",
     "fruits.apps.FruitsConfig",
     "sales.apps.SalesConfig",
+    "corsheaders",
     "rest_framework",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -46,6 +50,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -126,3 +131,17 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     )
 }
+
+# JWT
+SIMPLE_JWT = {
+    "AUTH_HEADER_TYPES": ("JWT",),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+}
+
+# CORS
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_METHODS = ["GET", "OPTIONS", "POST", "PUT"]
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    "JWT",
+]
+CORS_ALLOW_CREDENTIALS = True

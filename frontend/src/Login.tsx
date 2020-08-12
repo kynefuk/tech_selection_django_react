@@ -1,7 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import { DefaultApi } from './Api';
 
 export const Login: React.FC = () => {
+  const url = 'http://localhost:8000';
+  const api = new DefaultApi(url);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleOnChangeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(e.target.value);
+  };
+
+  const handleOnChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  };
+
+  const handleOnSubmit = (e: React.FormEvent<HTMLButtonElement>) => {
+    api.login(username, password);
+  };
   return (
     <Container className='mt-5'>
       <Row className='justify-content-md-center'>
@@ -10,13 +27,21 @@ export const Login: React.FC = () => {
           <Form>
             <Form.Group controlId='formBasicUserName'>
               <Form.Label>ユーザ名</Form.Label>
-              <Form.Control type='text' placeholder='Enter username' />
+              <Form.Control
+                type='text'
+                placeholder='Enter username'
+                onChange={handleOnChangeUsername}
+              />
             </Form.Group>
             <Form.Group controlId='formBasicPassword'>
               <Form.Label>パスワード</Form.Label>
-              <Form.Control type='password' placeholder='Password' />
+              <Form.Control
+                type='password'
+                placeholder='Password'
+                onChange={handleOnChangePassword}
+              />
             </Form.Group>
-            <Button variant='primary' type='submit'>
+            <Button variant='primary' type='submit' onSubmit={handleOnSubmit}>
               Submit
             </Button>
           </Form>
