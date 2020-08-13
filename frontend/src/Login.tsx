@@ -16,15 +16,17 @@ export const Login: React.FC = () => {
     setPassword(e.target.value);
   };
 
-  const handleOnSubmit = (e: React.FormEvent<HTMLButtonElement>) => {
-    api.login(username, password);
+  const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    //const response = api.login(username, password);
+    const response = api.admin();
+    console.log(response);
   };
   return (
     <Container className='mt-5'>
       <Row className='justify-content-md-center'>
         <Col xs={6}>
           <h2>ログイン</h2>
-          <Form>
+          <Form onSubmit={handleOnSubmit}>
             <Form.Group controlId='formBasicUserName'>
               <Form.Label>ユーザ名</Form.Label>
               <Form.Control
@@ -41,7 +43,7 @@ export const Login: React.FC = () => {
                 onChange={handleOnChangePassword}
               />
             </Form.Group>
-            <Button variant='primary' type='submit' onSubmit={handleOnSubmit}>
+            <Button variant='primary' type='submit'>
               Submit
             </Button>
           </Form>

@@ -139,9 +139,14 @@ SIMPLE_JWT = {
 }
 
 # CORS
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_METHODS = ["GET", "OPTIONS", "POST", "PUT"]
-CORS_ALLOW_HEADERS = list(default_headers) + [
-    "JWT",
+CORS_ORIGIN_WHITELIST = ["http://localhost:3001"]
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
 ]
+CORS_ALLOW_HEADERS = list(default_headers) + ["JWT", "Referer"]
 CORS_ALLOW_CREDENTIALS = True

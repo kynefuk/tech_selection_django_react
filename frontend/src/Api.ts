@@ -8,6 +8,8 @@ export class DefaultApi {
     this.instance = axios.create({
       baseURL: url,
       timeout: 1000,
+      headers: { 'Content-Type': 'applilcation/json' },
+      withCredentials: true,
     });
   }
 
@@ -17,7 +19,13 @@ export class DefaultApi {
       username: username,
       password: password,
     };
+
     const response = await this.instance.post(url, data);
-    console.log(response.data.access!);
+    return response.data.access!;
+  }
+
+  async admin() {
+    const response = await this.instance.get('admin/');
+    return response.data;
   }
 }
