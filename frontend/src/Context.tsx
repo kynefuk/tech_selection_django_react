@@ -1,35 +1,39 @@
-import React, { useState, useContext, useReducer } from 'react';
-import { AccessTokenAction, RefreshTokenAction } from './Action';
-import { AccessTokenReducer } from './Reducer';
+import React, { useContext, useReducer } from 'react';
+import { AccessTokenAction, RefreshTokenAction, UserAction } from './Action';
+import {
+  AccessTokenReducer,
+  RefreshTokenReducer,
+  UserReducer,
+} from './Reducer';
 
 export type AccessTokenContextType = {
   access: string;
-  dispatch: React.Dispatch<AccessTokenAction>;
+  dispatchAccessToken: React.Dispatch<AccessTokenAction>;
 };
 
 const initialAccessTokenValue = {
   access: '',
-  dispatch: () => {},
+  dispatchAccessToken: () => {},
 };
 
 export type RefreshTokenContextType = {
   refresh: string;
-  setRefreshToken: React.Dispatch<RefreshTokenAction>;
+  dispatchRefreshToken: React.Dispatch<RefreshTokenAction>;
 };
 
 const initialRefreshTokenValue = {
   refresh: '',
-  setRefreshToken: () => {},
+  dispatchRefreshToken: () => {},
 };
 
 export type UserContextType = {
   username: string;
-  setUsername: React.Dispatch<RefreshTokenAction>;
+  dispatchUsername: React.Dispatch<UserAction>;
 };
 
 const initialUserValue = {
   username: '',
-  setUsername: () => {},
+  dispatchUsername: () => {},
 };
 
 export const AccessTokenContext = React.createContext<AccessTokenContextType>(
@@ -39,6 +43,7 @@ export const AccessTokenContext = React.createContext<AccessTokenContextType>(
 export const RefreshTokenContext = React.createContext<RefreshTokenContextType>(
   initialRefreshTokenValue
 );
+
 export const UserContext = React.createContext<UserContextType>(
   initialUserValue
 );
@@ -56,13 +61,17 @@ export const useUserContext = () => {
 };
 
 export const AppContext: React.FC = ({ children }) => {
-  const [access, dispatch] = useReducer(AccessTokenReducer, '');
+  const [access, dispatchAccessToken] = useReducer(AccessTokenReducer, '');
+  const [refresh, dispatchRefreshToken] = useReducer(RefreshTokenReducer, '');
+  const [username, dispatchUsername] = useReducer(UserReducer, '');
 
   return (
-    <AccessTokenContext.Provider value={{ access, dispatch }}>
-      <UserContext.Provider value={{ userState, setUser }}>
-        {children}
-      </UserContext.Provider>
+    <AccessTokenContext.Provider value={{ access, dispatchAccessToken }}>
+      <RefreshTokenContext.Provider value={{ refresh, dispatchRefreshToken }}>
+        <UserContext.Provider value={{ username, dispatchUsername }}>
+          {children}
+        </UserContext.Provider>
+      </RefreshTokenContext.Provider>
     </AccessTokenContext.Provider>
   );
 };
