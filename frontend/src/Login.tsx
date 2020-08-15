@@ -16,9 +16,9 @@ export const Login: React.FC = () => {
     setPassword(e.target.value);
   };
 
-  const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    //const response = api.login(username, password);
-    const response = api.admin();
+  const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const response = await api.login(username, password);
     console.log(response);
   };
   return (
