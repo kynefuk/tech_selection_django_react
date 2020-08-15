@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { tokenContext, userContext } from './Context';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { DefaultApi } from './Api';
 
@@ -7,6 +8,8 @@ export const Login: React.FC = () => {
   const api = new DefaultApi(url);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const token = useContext(tokenContext);
+  const user = useContext(userContext);
 
   const handleOnChangeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
@@ -19,8 +22,10 @@ export const Login: React.FC = () => {
   const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const response = await api.login(username, password);
-    console.log(response);
+    const accessToken = response.data.access;
+    const refreshToken = response.data.refresh;
   };
+
   return (
     <Container className='mt-5'>
       <Row className='justify-content-md-center'>
