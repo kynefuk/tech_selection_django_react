@@ -4,13 +4,18 @@ import './App.css';
 import { Login } from './Login';
 import { TopPage } from './TopPage';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Auth } from './Auth';
 
 const App = () => {
   return (
     <div>
       <Switch>
         <Route path='/login' component={Login}></Route>
-        <Route path='/top' component={TopPage}></Route>
+        <Auth>
+          <Switch>
+            <Route path='/top' component={TopPage}></Route>
+          </Switch>
+        </Auth>
       </Switch>
     </div>
   );

@@ -9,7 +9,7 @@ import {
   RefreshTokenActionType,
   UserActionType,
 } from './Action';
-import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
 import { DefaultApi } from './Api';
 import { useHistory } from 'react-router-dom';
 
@@ -18,8 +18,9 @@ export const Login: React.FC = () => {
   const api = new DefaultApi(url);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { access, dispatchAccessToken } = useAccesTokenContext();
-  const { refresh, dispatchRefreshToken } = useRefreshTokenContext();
+  const [error, setError] = useState('');
+  const { dispatchAccessToken } = useAccesTokenContext();
+  const { dispatchRefreshToken } = useRefreshTokenContext();
   const { dispatchUsername } = useUserContext();
   const history = useHistory();
 
@@ -36,9 +37,7 @@ export const Login: React.FC = () => {
     try {
       const response = await api.login(username, password);
       if (response.status !== 200) {
-        throw new Error(
-          `statusCode: $response.status, message: $response.statusText`
-        );
+        throw new Error(`${response.status}: ${response.statusText}`);
       }
       const accessToken = response.data.access;
       const refreshToken = response.data.refresh;
@@ -58,14 +57,28 @@ export const Login: React.FC = () => {
 
       history.push('/top');
     } catch (err) {
-      throw err;
+      setError('ユーザ名またはパスワードが間違っています。');
+      console.error(err);
     }
+  };
+
+  const ShowError = () => {
+    const [show, setShow] = useState(true);
+    if (error && show) {
+      return (
+        <Alert variant='danger' dismissible onClose={() => setShow(!show)}>
+          {error}
+        </Alert>
+      );
+    }
+    return <></>;
   };
 
   return (
     <Container className='mt-5'>
       <Row className='justify-content-md-center'>
         <Col xs={6}>
+          <ShowError />
           <h2>ログイン</h2>
           <Form onSubmit={handleOnSubmit}>
             <Form.Group controlId='formBasicUserName'>

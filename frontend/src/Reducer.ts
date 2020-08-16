@@ -44,8 +44,11 @@ export const RefreshTokenReducer = (
 export const UserReducer = (state: string = '', action: UserAction) => {
   switch (action.type) {
     case UserActionType.ADD:
-      return action.payload;
+      const username = action.payload;
+      localStorage.setItem('username', username);
+      return username;
     case UserActionType.DELETE:
+      localStorage.removeItem('username');
       return '';
     default:
       return state;

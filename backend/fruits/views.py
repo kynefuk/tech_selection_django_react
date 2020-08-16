@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -8,6 +9,8 @@ from .serializers import FruitsSerializer
 
 
 class FruitsListCreateView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def get(self, request, format=None):
         fruits = Fruits.objects.all()
         serializer = FruitsSerializer(instance=fruits, many=True)
@@ -23,6 +26,8 @@ class FruitsListCreateView(APIView):
 
 
 class FruitsAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def put(self, request, pk, format=None):
         fruit = get_object_or_404(Fruits, pk=pk)
         serializer = FruitsSerializer(instance=fruit, data=request.data)
