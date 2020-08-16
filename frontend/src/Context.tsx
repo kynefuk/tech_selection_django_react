@@ -11,19 +11,9 @@ export type AccessTokenContextType = {
   dispatchAccessToken: React.Dispatch<AccessTokenAction>;
 };
 
-const initialAccessTokenValue = {
-  access: '',
-  dispatchAccessToken: () => {},
-};
-
 export type RefreshTokenContextType = {
   refresh: string;
   dispatchRefreshToken: React.Dispatch<RefreshTokenAction>;
-};
-
-const initialRefreshTokenValue = {
-  refresh: '',
-  dispatchRefreshToken: () => {},
 };
 
 export type UserContextType = {
@@ -31,22 +21,22 @@ export type UserContextType = {
   dispatchUsername: React.Dispatch<UserAction>;
 };
 
-const initialUserValue = {
-  username: '',
-  dispatchUsername: () => {},
-};
-
-export const AccessTokenContext = React.createContext<AccessTokenContextType>(
-  initialAccessTokenValue
-);
+export const AccessTokenContext = React.createContext<AccessTokenContextType>({
+  access: localStorage.getItem('access') || '',
+  dispatchAccessToken: () => {},
+});
 
 export const RefreshTokenContext = React.createContext<RefreshTokenContextType>(
-  initialRefreshTokenValue
+  {
+    refresh: localStorage.getItem('refresh') || '',
+    dispatchRefreshToken: () => {},
+  }
 );
 
-export const UserContext = React.createContext<UserContextType>(
-  initialUserValue
-);
+export const UserContext = React.createContext<UserContextType>({
+  username: localStorage.getItem('username') || '',
+  dispatchUsername: () => {},
+});
 
 export const useAccesTokenContext = () => {
   return useContext(AccessTokenContext);
@@ -61,9 +51,18 @@ export const useUserContext = () => {
 };
 
 export const AppContext: React.FC = ({ children }) => {
-  const [access, dispatchAccessToken] = useReducer(AccessTokenReducer, '');
-  const [refresh, dispatchRefreshToken] = useReducer(RefreshTokenReducer, '');
-  const [username, dispatchUsername] = useReducer(UserReducer, '');
+  const storedAccessToken = localStorage.getItem('access') || '';
+  const storedRefreshToken = localStorage.getItem('refresh') || '';
+  const storedUsername = localStorage.getItem('username') || '';
+  const [access, dispatchAccessToken] = useReducer(
+    AccessTokenReducer,
+    storedAccessToken
+  );
+  const [refresh, dispatchRefreshToken] = useReducer(
+    RefreshTokenReducer,
+    storedRefreshToken
+  );
+  const [username, dispatchUsername] = useReducer(UserReducer, storedUsername);
 
   return (
     <AccessTokenContext.Provider value={{ access, dispatchAccessToken }}>

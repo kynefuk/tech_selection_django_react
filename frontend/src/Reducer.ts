@@ -13,9 +13,11 @@ export const AccessTokenReducer = (
 ) => {
   switch (action.type) {
     case AccessTokenActionType.ADD:
-      const token = action.payload;
-      return token;
+      const access = action.payload;
+      localStorage.setItem('access', access);
+      return access;
     case AccessTokenActionType.DELETE:
+      localStorage.removeItem('access');
       return '';
     default:
       return state;
@@ -28,8 +30,11 @@ export const RefreshTokenReducer = (
 ) => {
   switch (action.type) {
     case RefreshTokenActionType.ADD:
+      const refresh = action.payload;
+      localStorage.setItem('refresh', refresh);
       return action.payload;
     case RefreshTokenActionType.DELETE:
+      localStorage.removeItem('refresh');
       return '';
     default:
       return state;

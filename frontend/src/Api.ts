@@ -19,8 +19,14 @@ export class DefaultApi {
       username: username,
       password: password,
     };
+    return await this.instance.post(url, data);
+  }
 
-    const response = await this.instance.post(url, data);
-    return response.data.access!;
+  async refreshAccessToken(refreshToken: string) {
+    const url = '/api/token/refresh/';
+    const data = {
+      refresh: refreshToken,
+    };
+    return await this.instance.post(url, data);
   }
 }

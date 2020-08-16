@@ -1,15 +1,27 @@
-import React, { useState, useContext } from 'react';
-import { tokenContext, userContext } from './Context';
+import React, { useState } from 'react';
+import {
+  useAccesTokenContext,
+  useRefreshTokenContext,
+  useUserContext,
+} from './Context';
+import {
+  AccessTokenActionType,
+  RefreshTokenActionType,
+  UserActionType,
+} from './Action';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { DefaultApi } from './Api';
+import { useHistory } from 'react-router-dom';
 
 export const Login: React.FC = () => {
   const url = 'http://localhost:8000';
   const api = new DefaultApi(url);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const token = useContext(tokenContext);
-  const user = useContext(userContext);
+  const { access, dispatchAccessToken } = useAccesTokenContext();
+  const { refresh, dispatchRefreshToken } = useRefreshTokenContext();
+  const { dispatchUsername } = useUserContext();
+  const history = useHistory();
 
   const handleOnChangeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
@@ -21,9 +33,33 @@ export const Login: React.FC = () => {
 
   const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const response = await api.login(username, password);
-    const accessToken = response.data.access;
-    const refreshToken = response.data.refresh;
+    try {
+      const response = await api.login(username, password);
+      if (response.status !== 200) {
+        throw new Error(
+          `statusCode: $response.status, message: $response.statusText`
+        );
+      }
+      const accessToken = response.data.access;
+      const refreshToken = response.data.refresh;
+
+      dispatchAccessToken({
+        type: AccessTokenActionType.ADD,
+        payload: accessToken,
+      });
+      dispatchRefreshToken({
+        type: RefreshTokenActionType.ADD,
+        payload: refreshToken,
+      });
+      dispatchUsername({
+        type: UserActionType.ADD,
+        payload: username,
+      });
+
+      history.push('/top');
+    } catch (err) {
+      throw err;
+    }
   };
 
   return (
