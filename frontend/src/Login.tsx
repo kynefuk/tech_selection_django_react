@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  useAccesTokenContext,
+  useAccessTokenContext,
   useRefreshTokenContext,
   useUserContext,
 } from './Context';
@@ -19,7 +19,7 @@ export const Login: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const { dispatchAccessToken } = useAccesTokenContext();
+  const { dispatchAccessToken } = useAccessTokenContext();
   const { dispatchRefreshToken } = useRefreshTokenContext();
   const { dispatchUsername } = useUserContext();
   const history = useHistory();

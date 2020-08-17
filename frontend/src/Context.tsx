@@ -38,7 +38,7 @@ export const UserContext = React.createContext<UserContextType>({
   dispatchUsername: () => {},
 });
 
-export const useAccesTokenContext = () => {
+export const useAccessTokenContext = () => {
   return useContext(AccessTokenContext);
 };
 
