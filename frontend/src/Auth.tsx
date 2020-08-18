@@ -1,20 +1,40 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { useAccessTokenContext, useRefreshTokenContext } from './Context';
-import { AccessTokenActionType } from './Action';
+import {
+  AccessTokenActionType,
+  AccessTokenAction,
+  RefreshTokenAction,
+} from './Action';
 import { DefaultApi } from './Api';
+
+type verifyTokenType = {
+  token: string;
+  dispatch:
+    | React.Dispatch<AccessTokenAction>
+    | React.Dispatch<RefreshTokenAction>;
+};
 
 export const Auth: React.FC = ({ children }) => {
   const url = process.env.REACT_APP_SERVER_URL || '';
   const api = new DefaultApi(url);
   const { access, dispatchAccessToken } = useAccessTokenContext();
-  const { refresh } = useRefreshTokenContext();
+  const { refresh, dispatchRefreshToken } = useRefreshTokenContext();
+  const [isAccessTokenVerified, setAccessTokenVerified] = useState(false);
+  const [isRefreshTokenVerified, setRefreshTokenVerified] = useState(false);
 
-  const verify = async (token: string) => {
-    const response = await api.verifyToken(token);
-    console.log(response);
-    return response;
-  };
+  useEffect(() => {
+    const verifyToken = async ({ token, dispatch }: verifyTokenType) => {
+      const response = await api.verifyToken(token);
+      dispatch({
+        type: AccessTokenActionType.ADD,
+        payload: token,
+      });
+      console.log(response);
+    };
+    verifyToken(access, dispatchAccessToken);
+    verifyToken(refresh, dispatchRefreshToken);
+  }, []);
 
   const refreshAccessToken = async () => {
     console.log('refreshAccessToken called');
@@ -27,17 +47,6 @@ export const Auth: React.FC = ({ children }) => {
   };
 
   const Sample = () => {
-    const isAccessTokenVerified = verify(access);
-    const isRefreshTokenVerified = verify(refresh);
-    console.log('hoooo');
-
-    if (isAccessTokenVerified) {
-      return <>{children}</>;
-    }
-    if (isRefreshTokenVerified) {
-      refreshAccessToken();
-      return <>{children}</>;
-    }
     return <Redirect to={'/login'} />;
   };
 
