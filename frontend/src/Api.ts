@@ -33,13 +33,7 @@ export class DefaultApi {
     const data = {
       token: accessToken,
     };
-    try {
-      const response = await this.instance.post(url, data);
-      //const response = await axios.post(url, data);
-    } catch (err) {
-      return false;
-    }
-    return true;
+    return await this.instance.post(url, data);
   }
 
   async refreshAccessToken(refreshToken: string) {
@@ -47,12 +41,6 @@ export class DefaultApi {
     const data = {
       refresh: refreshToken,
     };
-    let response;
-    try {
-      response = await this.instance.post(url, data);
-    } catch (err) {
-      return '';
-    }
-    return response.data.access;
+    return await this.instance.post(url, data);
   }
 }
