@@ -1,7 +1,11 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useAccessTokenContext, useRefreshTokenContext } from './Context';
-import { AccessTokenActionType } from './Action';
+import {
+  useAccessTokenContext,
+  useRefreshTokenContext,
+  useUserContext,
+} from './Context';
+import { AccessTokenActionType, UserActionType } from './Action';
 import { DefaultApi } from './Api';
 
 export const Auth: React.FC = ({ children }) => {
@@ -10,6 +14,7 @@ export const Auth: React.FC = ({ children }) => {
   const history = useHistory();
   const { access, dispatchAccessToken } = useAccessTokenContext();
   const { refresh } = useRefreshTokenContext();
+  const { username, dispatchUsername } = useUserContext();
 
   const verifyToken = async (accessToken: string) => {
     return await api.verifyToken(accessToken);
@@ -36,12 +41,23 @@ export const Auth: React.FC = ({ children }) => {
           await verifyToken(refresh);
           await refreshAccessToken();
         } catch (error) {
+          dispatchUsername({
+            type: UserActionType.DELETE,
+            payload: '',
+          });
           history.push('/login');
         }
       }
     };
     f();
-  }, []);
+  }, [
+    access,
+    dispatchUsername,
+    history,
+    refresh,
+    refreshAccessToken,
+    verifyToken,
+  ]);
 
   return <>{children}</>;
 };
