@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   useAccessTokenContext,
@@ -14,23 +14,22 @@ export const Auth: React.FC = ({ children }) => {
   const history = useHistory();
   const { access, dispatchAccessToken } = useAccessTokenContext();
   const { refresh } = useRefreshTokenContext();
-  const { username, dispatchUsername } = useUserContext();
+  const { dispatchUsername } = useUserContext();
 
-  const verifyToken = async (accessToken: string) => {
-    return await api.verifyToken(accessToken);
-  };
+  const verifyToken = useCallback(
+    async (accessToken: string) => {
+      return await api.verifyToken(accessToken);
+    },
+    [api]
+  );
 
-  const refreshAccessToken = async () => {
-    try {
-      const response = await api.refreshAccessToken(refresh);
-      dispatchAccessToken({
-        type: AccessTokenActionType.ADD,
-        payload: response.data.access,
-      });
-    } catch (error) {
-      history.push('/login');
-    }
-  };
+  const refreshAccessToken = useCallback(async () => {
+    const response = await api.refreshAccessToken(refresh);
+    dispatchAccessToken({
+      type: AccessTokenActionType.ADD,
+      payload: response.data.access,
+    });
+  }, [api]);
 
   useEffect(() => {
     const f = async () => {
