@@ -4,9 +4,9 @@ import {
   useAccessTokenContext,
   useRefreshTokenContext,
   useUserContext,
-} from './Context';
-import { AccessTokenActionType, UserActionType } from './Action';
-import { DefaultApi } from './Api';
+} from '../../Context';
+import { AccessTokenActionType, UserActionType } from '../../Action';
+import { DefaultApi } from '../../api/index';
 
 export const Auth: React.FC = ({ children }) => {
   const url = process.env.REACT_APP_SERVER_URL || '';
@@ -29,7 +29,7 @@ export const Auth: React.FC = ({ children }) => {
       type: AccessTokenActionType.ADD,
       payload: response.data.access,
     });
-  }, [api]);
+  }, [api, refresh, dispatchAccessToken]);
 
   useEffect(() => {
     const f = async () => {

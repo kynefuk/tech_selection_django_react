@@ -1,11 +1,5 @@
-import axios, { AxiosInstance } from 'axios';
-import {
-  AccessTokenType,
-  RefreshTokenType,
-  FruitType,
-  LoginType,
-} from './types/ResponseType';
-import { AxiosResponse } from 'axios';
+import axios, { AxiosInstance, AxiosResponse, AxiosRequestConfig } from 'axios';
+import { AccessTokenType, FruitType, LoginType } from '../types/ResponseType';
 
 export class DefaultApi {
   url: string;
@@ -50,8 +44,15 @@ export class DefaultApi {
     return await this.instance.post(url, data);
   }
 
-  async getFruitsList(): Promise<AxiosResponse<FruitType[]>> {
+  async getFruitsList(
+    accessToken: string
+  ): Promise<AxiosResponse<FruitType[]>> {
     const url = '/fruits/';
-    return await this.instance.get(url);
+    const config: AxiosRequestConfig = {
+      headers: {
+        Authorization: 'JWT ' + accessToken,
+      },
+    };
+    return await this.instance.get(url, config);
   }
 }

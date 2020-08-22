@@ -4,12 +4,12 @@ import {
   useUserContext,
   useAccessTokenContext,
   useRefreshTokenContext,
-} from './Context';
+} from '../../Context';
 import {
   UserActionType,
   AccessTokenActionType,
   RefreshTokenActionType,
-} from './Action';
+} from '../../Action';
 import { useHistory } from 'react-router-dom';
 
 export const AppBar = () => {

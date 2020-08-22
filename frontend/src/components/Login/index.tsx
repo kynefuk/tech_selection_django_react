@@ -3,19 +3,19 @@ import {
   useAccessTokenContext,
   useRefreshTokenContext,
   useUserContext,
-} from './Context';
+} from '../../Context';
 import {
   AccessTokenActionType,
   RefreshTokenActionType,
   UserActionType,
-} from './Action';
+} from '../../Action';
 import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
-import { DefaultApi } from './Api';
+import { useApi } from '../../api/useApi';
 import { useHistory } from 'react-router-dom';
 
 export const Login: React.FC = () => {
   const url = 'http://localhost:8000';
-  const api = new DefaultApi(url);
+  const { api } = useApi(url);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -66,7 +66,7 @@ export const Login: React.FC = () => {
     const [show, setShow] = useState(true);
     if (error && show) {
       return (
-        <Alert variant='danger' dismissible onClose={() => setShow(!show)}>
+        <Alert variant="danger" dismissible onClose={() => setShow(!show)}>
           {error}
         </Alert>
       );
@@ -75,29 +75,29 @@ export const Login: React.FC = () => {
   };
 
   return (
-    <Container className='mt-5'>
-      <Row className='justify-content-md-center'>
+    <Container className="mt-5">
+      <Row className="justify-content-md-center">
         <Col xs={6}>
           <ShowError />
           <h2>ログイン</h2>
           <Form onSubmit={handleOnSubmit}>
-            <Form.Group controlId='formBasicUserName'>
+            <Form.Group controlId="formBasicUserName">
               <Form.Label>ユーザ名</Form.Label>
               <Form.Control
-                type='text'
-                placeholder='Enter username'
+                type="text"
+                placeholder="Enter username"
                 onChange={handleOnChangeUsername}
               />
             </Form.Group>
-            <Form.Group controlId='formBasicPassword'>
+            <Form.Group controlId="formBasicPassword">
               <Form.Label>パスワード</Form.Label>
               <Form.Control
-                type='password'
-                placeholder='Password'
+                type="password"
+                placeholder="Password"
                 onChange={handleOnChangePassword}
               />
             </Form.Group>
-            <Button variant='primary' type='submit'>
+            <Button variant="primary" type="submit">
               Submit
             </Button>
           </Form>

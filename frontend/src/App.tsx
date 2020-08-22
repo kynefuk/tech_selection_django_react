@@ -1,10 +1,10 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
-import './App.css';
-import { Login } from './Login';
-import { TopPage } from './TopPage';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Auth } from './Auth';
+import './App.css';
+import { Switch, Route } from 'react-router-dom';
+import { Login } from './components/Login';
+import { TopPage } from './components/TopPage';
+import { Auth } from './components/Auth';
 import { Fruit } from './components/Fruit';
 
 const App = () => {

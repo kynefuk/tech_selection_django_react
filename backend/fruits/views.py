@@ -9,7 +9,7 @@ from .serializers import FruitsSerializer
 
 
 class FruitsListCreateView(APIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
         fruits = Fruits.objects.all()

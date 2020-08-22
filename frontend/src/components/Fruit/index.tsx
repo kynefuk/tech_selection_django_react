@@ -1,22 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React from 'react';
 import { Container, Row, Col, Breadcrumb, Table } from 'react-bootstrap';
-import { useApi } from '../CustomHooks/useApi';
-import { FruitType } from '../../types/ResponseType';
+import { useFruits } from './useFruits';
 
 export const Fruit: React.FC = () => {
   const url = process.env.REACT_APP_SERVER_URL || 'http://localhost:8000';
-  const [fruits, setFruits] = useState<FruitType[]>([]);
-  const { api } = useApi(url);
-  const fetchFruitsList = useCallback(async () => {
-    try {
-      const response = await api.getFruitsList();
-      setFruits(response.data);
-    } catch (error) {}
-  }, [api]);
-
-  useEffect(() => {
-    fetchFruitsList();
-  }, []);
+  const { fruits } = useFruits(url);
 
   return (
     <Container className="justify-content-center">
@@ -38,13 +26,17 @@ export const Fruit: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>編集・削除</td>
-              </tr>
+              {fruits.map((fruit) => {
+                return (
+                  <tr key={fruit.id}>
+                    <td>{fruit.id}</td>
+                    <td>{fruit.name}</td>
+                    <td>{fruit.price}</td>
+                    <td>{fruit.created_at}</td>
+                    <td>編集・削除</td>
+                  </tr>
+                );
+              })}
             </tbody>
           </Table>
         </Col>

@@ -5,7 +5,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { AppContext } from './Context';
-import { AppBar } from './NavBar';
+import { AppBar } from './components/NavBar';
 
 ReactDOM.render(
   <Router>

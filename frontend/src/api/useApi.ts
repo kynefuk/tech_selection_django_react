@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { DefaultApi } from '../../Api';
+import { DefaultApi } from './index';
 
 export const useApi = (url: string) => {
   const api = useMemo(() => {
