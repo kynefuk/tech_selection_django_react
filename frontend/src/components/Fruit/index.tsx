@@ -1,6 +1,14 @@
 import React from 'react';
-import { Container, Row, Col, Breadcrumb, Table } from 'react-bootstrap';
+import {
+  Container,
+  Row,
+  Col,
+  Breadcrumb,
+  Table,
+  Button,
+} from 'react-bootstrap';
 import { useFruits } from './useFruits';
+import { Link } from 'react-router-dom';
 
 export const Fruit: React.FC = () => {
   const url = process.env.REACT_APP_SERVER_URL || 'http://localhost:8000';
@@ -33,12 +41,17 @@ export const Fruit: React.FC = () => {
                     <td>{fruit.name}</td>
                     <td>{fruit.price}</td>
                     <td>{fruit.created_at}</td>
-                    <td>編集・削除</td>
+                    <td>
+                      <Link to={'#'}>編集</Link>/<Link to={'#'}>削除</Link>
+                    </td>
                   </tr>
                 );
               })}
             </tbody>
           </Table>
+          <Button variant="outline-secondary">
+            <Link to={'/fruits/new'}>新規追加</Link>
+          </Button>
         </Col>
       </Row>
     </Container>

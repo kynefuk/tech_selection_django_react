@@ -1,5 +1,10 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosRequestConfig } from 'axios';
-import { AccessTokenType, FruitType, LoginType } from '../types/ResponseType';
+import {
+  AccessTokenResponseType,
+  FruitResponseType,
+  LoginResponseType,
+  FruitRegisterRequestType,
+} from '../types/AxiosType';
 
 export class DefaultApi {
   url: string;
@@ -17,7 +22,7 @@ export class DefaultApi {
   async login(
     username: string,
     password: string
-  ): Promise<AxiosResponse<LoginType>> {
+  ): Promise<AxiosResponse<LoginResponseType>> {
     const url = '/api/token/';
     const data = {
       username: username,
@@ -36,7 +41,7 @@ export class DefaultApi {
 
   async refreshAccessToken(
     refreshToken: string
-  ): Promise<AxiosResponse<AccessTokenType>> {
+  ): Promise<AxiosResponse<AccessTokenResponseType>> {
     const url = '/api/token/refresh/';
     const data = {
       refresh: refreshToken,
@@ -46,7 +51,7 @@ export class DefaultApi {
 
   async getFruitsList(
     accessToken: string
-  ): Promise<AxiosResponse<FruitType[]>> {
+  ): Promise<AxiosResponse<FruitResponseType[]>> {
     const url = '/fruits/';
     const config: AxiosRequestConfig = {
       headers: {
@@ -54,5 +59,15 @@ export class DefaultApi {
       },
     };
     return await this.instance.get(url, config);
+  }
+
+  async registerFruit(accessToken: string, data: FruitRegisterRequestType) {
+    const url = '/fruits/';
+    const config: AxiosRequestConfig = {
+      headers: {
+        Authorization: 'JWT ' + accessToken,
+      },
+    };
+    return await this.instance.post(url, data, config);
   }
 }

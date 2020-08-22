@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
-import { FruitType } from '../../types/ResponseType';
+import { FruitResponseType } from '../../types/AxiosType';
 import { useApi } from '../../api/useApi';
 import { useAccessTokenContext } from '../../Context';
 
 export const useFruits = (url: string) => {
-  const [fruits, setFruits] = useState<FruitType[]>([]);
+  const [fruits, setFruits] = useState<FruitResponseType[]>([]);
   const { api } = useApi(url);
   const { access } = useAccessTokenContext();
 
