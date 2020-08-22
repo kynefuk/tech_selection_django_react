@@ -1,10 +1,11 @@
 import axios, { AxiosInstance } from 'axios';
-
-// axios.interceptors.response.use((response) => {
-//   if (response.status !== 200) {
-
-//   }
-// })
+import {
+  AccessTokenType,
+  RefreshTokenType,
+  FruitType,
+  LoginType,
+} from './types/ResponseType';
+import { AxiosResponse } from 'axios';
 
 export class DefaultApi {
   url: string;
@@ -19,7 +20,10 @@ export class DefaultApi {
     });
   }
 
-  async login(username: string, password: string) {
+  async login(
+    username: string,
+    password: string
+  ): Promise<AxiosResponse<LoginType>> {
     const url = '/api/token/';
     const data = {
       username: username,
@@ -36,11 +40,18 @@ export class DefaultApi {
     return await this.instance.post(url, data);
   }
 
-  async refreshAccessToken(refreshToken: string) {
+  async refreshAccessToken(
+    refreshToken: string
+  ): Promise<AxiosResponse<AccessTokenType>> {
     const url = '/api/token/refresh/';
     const data = {
       refresh: refreshToken,
     };
     return await this.instance.post(url, data);
+  }
+
+  async getFruitsList(): Promise<AxiosResponse<FruitType[]>> {
+    const url = '/fruits/';
+    return await this.instance.get(url);
   }
 }

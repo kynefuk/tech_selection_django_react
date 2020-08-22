@@ -15,7 +15,7 @@ const App = () => {
         <Auth>
           <Switch>
             <Route path="/top" component={TopPage}></Route>
-            <Route path="/fruit" component={Fruit}></Route>
+            <Route path="/fruits" component={Fruit}></Route>
           </Switch>
         </Auth>
       </Switch>

@@ -1,7 +1,23 @@
-import React from 'react';
-import { Container, Row, Col, Breadcrumb } from 'react-bootstrap';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Container, Row, Col, Breadcrumb, Table } from 'react-bootstrap';
+import { useApi } from '../CustomHooks/useApi';
+import { FruitType } from '../../types/ResponseType';
 
 export const Fruit: React.FC = () => {
+  const url = process.env.REACT_APP_SERVER_URL || 'http://localhost:8000';
+  const [fruits, setFruits] = useState<FruitType[]>([]);
+  const { api } = useApi(url);
+  const fetchFruitsList = useCallback(async () => {
+    try {
+      const response = await api.getFruitsList();
+      setFruits(response.data);
+    } catch (error) {}
+  }, [api]);
+
+  useEffect(() => {
+    fetchFruitsList();
+  }, []);
+
   return (
     <Container className="justify-content-center">
       <Row>
@@ -11,6 +27,26 @@ export const Fruit: React.FC = () => {
             <Breadcrumb.Item href="#">TOP</Breadcrumb.Item>
             <Breadcrumb.Item active>果物マスタ管理</Breadcrumb.Item>
           </Breadcrumb>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>名称</th>
+                <th>単価</th>
+                <th>登録日時</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+                <td>編集・削除</td>
+              </tr>
+            </tbody>
+          </Table>
         </Col>
       </Row>
     </Container>

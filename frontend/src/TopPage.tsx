@@ -8,7 +8,7 @@ export const TopPage: React.FC = () => {
       <Row>
         <Col className="text-center">
           <h2 style={{ margin: '50px' }}>管理TOP</h2>
-          <Link to={'/fruits/'} style={{ display: 'block', margin: '20px' }}>
+          <Link to={'/fruits'} style={{ display: 'block', margin: '20px' }}>
             果物マスタ管理
           </Link>
           <Link to={'/sales/'} style={{ display: 'block', margin: '20px' }}>
