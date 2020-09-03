@@ -64,7 +64,14 @@ export const Fruit: React.FC = () => {
                     <td>{fruit.price}</td>
                     <td>{fruit.created_at}</td>
                     <td>
-                      <Button style={{ marginRight: 10 }}>編集</Button>
+                      <Link
+                        to={{
+                          pathname: `/fruits/${fruit.id}`,
+                          state: { fruit },
+                        }}
+                      >
+                        <Button style={{ marginRight: 10 }}>編集</Button>
+                      </Link>
                       <Button
                         style={{ marginLeft: 10 }}
                         variant="danger"

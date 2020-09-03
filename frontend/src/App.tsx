@@ -6,7 +6,7 @@ import { Login } from './components/Login';
 import { TopPage } from './components/TopPage';
 import { Auth } from './components/Auth';
 import { Fruit } from './components/Fruit';
-import { Register } from './components/Fruit/Register';
+import { Form } from './components/Fruit/Form';
 
 const App = () => {
   return (
@@ -17,8 +17,8 @@ const App = () => {
           <Switch>
             <Route path="/top" component={TopPage}></Route>
             <Route path="/fruits" exact component={Fruit}></Route>
-            <Route path="/fruits/new" exact component={Register}></Route>
-            <Route path="/fruits/:id" exact component={Register}></Route>
+            <Route path="/fruits/new" exact component={Form}></Route>
+            <Route path="/fruits/:id" exact component={Form}></Route>
           </Switch>
         </Auth>
       </Switch>
