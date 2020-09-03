@@ -21,5 +21,5 @@ export const useFruits = (url: string) => {
     fetchFruitsList();
   }, [fetchFruitsList]);
 
-  return { fruits };
+  return { fruits, setFruits };
 };

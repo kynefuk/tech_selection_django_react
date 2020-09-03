@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Form, Container, Row, Col, Button } from 'react-bootstrap';
+import { Form, Container, Row, Col, Button, Alert } from 'react-bootstrap';
 import { useApi } from '../../api/useApi';
 import { useAccessTokenContext } from '../../Context';
 
@@ -27,12 +27,12 @@ export const Register: React.FC = () => {
     e.preventDefault();
     try {
       const response = await api.registerFruit(access, { name, price });
-      if (response.status == 201) {
+      if (response.status === 201) {
         history.push('/fruits/');
       }
-    } catch (error) {
+    } catch (err) {
       setError('エラー');
-      console.log(error);
+      console.log(err);
     }
   };
 
@@ -41,6 +41,7 @@ export const Register: React.FC = () => {
       <Row className="justify-content-md-center">
         <Col xs={6}>
           <h2>果物登録</h2>
+          {error && <Alert variant="danger">{error}</Alert>}
           <Form
             onSubmit={async (e: React.FormEvent<HTMLElement>) =>
               await handleOnSubmit(e)

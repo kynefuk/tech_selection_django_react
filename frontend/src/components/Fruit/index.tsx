@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Container,
   Row,
@@ -6,13 +6,33 @@ import {
   Breadcrumb,
   Table,
   Button,
+  Alert,
 } from 'react-bootstrap';
 import { useFruits } from './useFruits';
+import { useApi } from '../../api/useApi';
+import { useAccessTokenContext } from '../../Context';
 import { Link } from 'react-router-dom';
 
 export const Fruit: React.FC = () => {
   const url = process.env.REACT_APP_SERVER_URL || 'http://localhost:8000';
-  const { fruits } = useFruits(url);
+  const { api } = useApi(url);
+  const { access } = useAccessTokenContext();
+  const { fruits, setFruits } = useFruits(url);
+  const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
+
+  const handleOnDelete = async (fruitId: number) => {
+    try {
+      const response = await api.deleteFruit(access, fruitId);
+      if (response.status === 204) {
+        setMessage('削除しました');
+        setFruits(fruits.filter((fruit) => fruit.id !== fruitId));
+      }
+    } catch (err) {
+      setError('削除に失敗しました');
+      console.log(err);
+    }
+  };
 
   return (
     <Container className="justify-content-center">
@@ -23,6 +43,8 @@ export const Fruit: React.FC = () => {
             <Breadcrumb.Item href="#">TOP</Breadcrumb.Item>
             <Breadcrumb.Item active>果物マスタ管理</Breadcrumb.Item>
           </Breadcrumb>
+          {error && <Alert variant="danger">{error}</Alert>}
+          {message && <Alert variant="success">{message}</Alert>}
           <Table striped bordered hover>
             <thead>
               <tr>
@@ -42,7 +64,16 @@ export const Fruit: React.FC = () => {
                     <td>{fruit.price}</td>
                     <td>{fruit.created_at}</td>
                     <td>
-                      <Link to={'#'}>編集</Link>/<Link to={'#'}>削除</Link>
+                      <Button style={{ marginRight: 10 }}>編集</Button>
+                      <Button
+                        style={{ marginLeft: 10 }}
+                        variant="danger"
+                        onClick={() => {
+                          handleOnDelete(fruit.id);
+                        }}
+                      >
+                        削除
+                      </Button>
                     </td>
                   </tr>
                 );
