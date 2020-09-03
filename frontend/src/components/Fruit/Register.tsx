@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Form, Container, Row, Col, Button } from 'react-bootstrap';
 import { useApi } from '../../api/useApi';
 import { useAccessTokenContext } from '../../Context';
@@ -9,9 +9,9 @@ export const Register: React.FC = () => {
   const { api } = useApi(url);
   const { access } = useAccessTokenContext();
   const history = useHistory();
-  // const { id } = useParams();
   const [name, setName] = useState('');
   const [price, setPrice] = useState(0);
+  const [error, setError] = useState('');
 
   const handleOnChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -23,11 +23,17 @@ export const Register: React.FC = () => {
     setPrice(value);
   };
 
-  const handleOnSubmit = () => {
+  const handleOnSubmit = async (e: React.FormEvent<HTMLElement>) => {
+    e.preventDefault();
     try {
-      const response = api.registerFruit(access, { name, price });
-      history.push('/fruits/');
-    } catch (error) {}
+      const response = await api.registerFruit(access, { name, price });
+      if (response.status == 201) {
+        history.push('/fruits/');
+      }
+    } catch (error) {
+      setError('エラー');
+      console.log(error);
+    }
   };
 
   return (
@@ -35,7 +41,11 @@ export const Register: React.FC = () => {
       <Row className="justify-content-md-center">
         <Col xs={6}>
           <h2>果物登録</h2>
-          <Form onSubmit={handleOnSubmit}>
+          <Form
+            onSubmit={async (e: React.FormEvent<HTMLElement>) =>
+              await handleOnSubmit(e)
+            }
+          >
             <Form.Group className="mt-3">
               <Form.Label>名称</Form.Label>
               <Form.Control
