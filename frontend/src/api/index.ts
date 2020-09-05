@@ -71,6 +71,20 @@ export class DefaultApi {
     return await this.instance.post(url, data, config);
   }
 
+  async updateFruit(
+    accessToken: string,
+    fruitId: number,
+    data: Partial<FruitRegisterRequestType>
+  ) {
+    const url = `/fruits/${fruitId}/`;
+    const config: AxiosRequestConfig = {
+      headers: {
+        Authorization: 'JWT ' + accessToken,
+      },
+    };
+    return await this.instance.put(url, data, config);
+  }
+
   async deleteFruit(accessToken: string, fruitId: number) {
     const url = `/fruits/${fruitId}/`;
     const config: AxiosRequestConfig = {
